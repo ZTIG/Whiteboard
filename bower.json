@@ -1,0 +1,17 @@
+{
+  "name": "Whiteboard",
+  "version": "0.0.0",
+  "authors": [
+    "ZTIG <ZTIGretz@gmail.com>"
+  ],
+  "description": "Whiteboard chatroom implemented with socket.io, express, jquery",
+  "main": "/js/whiteboard.js",
+  "license": "MIT",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ]
+}
