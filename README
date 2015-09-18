@@ -1,0 +1,12 @@
+README
+
+WHiteboard app demo using socket.io deployed from a express server.
+Current functional features:
+-Fullscreen canvas drawing app
+-Shared board from one room using socket.io
+
+Planned Features
+-Seperate rooms using socket.io room features
+-Implement new tools and color tools, implement with angular
+-Save rooms using mongoDB
+-Avatars and names for participants

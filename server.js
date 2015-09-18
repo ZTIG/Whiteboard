@@ -5,13 +5,13 @@ var io = require('socket.io')(http);
 var path = require('path');
 
 var users = 0;
-var marks = [];
-app.set('view engine', 'jade');
+var strokes = [];
+
 app.set('views', path.join(__dirname, 'templates'));
 
-app.get('/whiteboard',function(req, res){
+app.get('/room',function(req, res){
 	res.writeHead(200,{'Content-Type': 'text/html'});
-	res.render('wb.jade');
+	res.render('room.html');
 });
 
 http.listen(3000,function(){
@@ -21,10 +21,13 @@ http.listen(3000,function(){
 
 io.on('connection', function(socket){
 	users += 1;
+	socket.on
 	socket.on('disconnect', function(){
 		users -= 1;
+
 	});
-	socket.on('draw',function(mark){
-		
+	socket.on('stroke',function(stroke){
+		strokes.push(stroke);
+		io.emit('stroke');
 	});
 });

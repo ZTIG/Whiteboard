@@ -5,25 +5,38 @@ $(document).ready(function(){
 		width: window.innerWidth || document.body.clientWidth,
 		height: window.innerHeight || document.body.clientHeight
 	};
+	var loaded = false;
 
 	var container = document.getElementById('wbcontainer');
 	var wb = document.createElement('canvas');
 	wb.setAttribute('width',size.width);
 	wb.setAttribute('height',size.height);
 	wb.setAttribute('id','canvas');
-	container.appendChild(canvas);
+	container.appendChild(wb);
 
 	var context = wb.getContext("2d");
 	var socket = io();
 
 	var strokes = [];
-	var lastClick = {};
+
+	socket.on('load',function(data){
+		strokes = data;
+		loaded = true;
+	});
+
+	socket.on('stroke',function(stroke){
+		strokes.push(stroke);
+		draw();
+	});
+
 	$('#canvas').mousedown(function(e){
-  		lastCLick = currentPosition();
+  		var lastCLick = currentPosition();
 
   		this.mousemove(function(){
   			current = currentPosition();
-  			strokes.push(new Stroke(lastClick,current));
+  			newStroke = new Stroke(lastClick, current);
+  			strokes.push(newStroke);
+  			socket.emit("stroke", newStroke);
   			draw();
   			lastClick = current;
   		});
@@ -43,12 +56,10 @@ $(document).ready(function(){
 	};
 	function Stroke(from ,to ,color ='black', size = 25){
 		this.from = from;
-
 		this.to = to;
-
 		this.color = color;
 		this.size = size;
-	}
+	};
 
 	Stroke.prototype.drawSelf = function(ctx){
 		ctx.moveTo(this.from.x,this.from.y);
@@ -60,4 +71,5 @@ $(document).ready(function(){
 		for (var i = 0; i < strokes.length; i++) {
 			strokes[i].drawSelf(context);
 		};
+	}
 })();
