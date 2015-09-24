@@ -1,11 +1,12 @@
 $(document).ready(function(){
 
 
-	var size ={
+	var size = {
 		width: window.innerWidth || document.body.clientWidth,
 		height: window.innerHeight || document.body.clientHeight
 	};
 	var loaded = false;
+
 
 	var container = document.getElementById('wbcontainer');
 	var wb = document.createElement('canvas');
@@ -29,10 +30,10 @@ $(document).ready(function(){
 		draw();
 	});
 
-	$('#canvas').mousedown(function(e){
+	$('#canvas').mousedown(function(mouse){
   		var lastCLick = currentPosition();
 
-  		this.mousemove(function(){
+  		$(this).mousemove(function(){
   			current = currentPosition();
   			newStroke = new Stroke(lastClick, current);
   			strokes.push(newStroke);
@@ -54,14 +55,19 @@ $(document).ready(function(){
 	function currentPosition(){
 		return new Click(e.pageX - this.offsetLeft, e.pageY - this.offsetTop);
 	};
-	function Stroke(from ,to ,color ='black', size = 25){
+	function Stroke(from ,to ,color, size){
+
 		this.from = from;
 		this.to = to;
-		this.color = color;
-		this.size = size;
+		this.color = color || "#df4b26";
+		this.size = width || 5;
 	};
 
 	Stroke.prototype.drawSelf = function(ctx){
+		ctx.strokeStyle = this.color;
+		ctx.lineJoin = "round";
+		ctx.lineWidth = this.width;
+
 		ctx.moveTo(this.from.x,this.from.y);
 		ctx.lineTo(this.to.x,this.to.y);
 		ctx.stroke();
@@ -72,4 +78,4 @@ $(document).ready(function(){
 			strokes[i].drawSelf(context);
 		};
 	}
-})();
+});
